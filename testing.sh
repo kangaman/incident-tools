@@ -8,9 +8,9 @@
 # Sekarang dengan fitur notifikasi ke Telegram dan pemindaian malware dengan YARA.
 
 # Konfigurasi otomatis tanpa input manual
-SERVER_NAME="server1"
-TELEGRAM_BOT_TOKEN="7560964164:AAFZhn2EUWcWsE7qM44OATiHGKOBRw9laRU"
-TELEGRAM_CHAT_ID="-4772629299"
+SERVER_NAME="InputNama Server"
+TELEGRAM_BOT_TOKEN="INPUT BOT TELEGRAM"
+TELEGRAM_CHAT_ID="INPUT CHAT ID"
 
 echo "Memulai proses pada server: $SERVER_NAME ..."
 
