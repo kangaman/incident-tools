@@ -5,11 +5,11 @@
 # *****************************************************************
 # Script ini digunakan untuk mengumpulkan informasi terkait keamanan sistem,
 # mencari backdoor, mendeteksi aktivitas mencurigakan, serta melakukan audit keamanan.
-# Sekarang dengan fitur notifikasi ke Telegram dan pemindaian malware dengan YARA.
+# Sekarang dengan fitur notifikasi ke Telegram.
 
 # Konfigurasi otomatis tanpa input manual
-SERVER_NAME="InputNama Server"
-TELEGRAM_BOT_TOKEN="INPUT BOT TELEGRAM"
+SERVER_NAME="Nama Server"
+TELEGRAM_BOT_TOKEN="TELEGRAM BOT TOKEN"
 TELEGRAM_CHAT_ID="INPUT CHAT ID"
 
 echo "Memulai proses pada server: $SERVER_NAME ..."
@@ -18,11 +18,10 @@ echo "Memulai proses pada server: $SERVER_NAME ..."
 curr=${PWD}
 
 # Membuat direktori utama untuk menyimpan hasil
-mkdir -p $curr/CyberSecIR-$SERVER_NAME/{SystemInfo,MalwareScan,Audit}
+mkdir -p $curr/CyberSecIR-$SERVER_NAME/{SystemInfo,Audit}
 
 # Menyesuaikan direktori
 sysDir=$curr/CyberSecIR-$SERVER_NAME/SystemInfo
-malwareDir=$curr/CyberSecIR-$SERVER_NAME/MalwareScan
 auditDir=$curr/CyberSecIR-$SERVER_NAME/Audit
 
 # ================================================================
@@ -73,14 +72,6 @@ grep -Rinw /home -e "slot" -e "gacor" -e "maxwin" -e "thailand" -e "sigmaslot" -
 echo "Pencarian selesai."
 
 # ================================================================
-# SCANNING MALWARE DENGAN YARA
-# ================================================================
-echo "Menjalankan pemindaian malware dengan YARA..."
-yara -r /usr/share/yara/rules.yar /home/ > $malwareDir/YaraScan_Home.txt
-yara -r /usr/share/yara/rules.yar /var/www/ > $malwareDir/YaraScan_WWW.txt
-echo "Pemindaian malware selesai."
-
-# ================================================================
 # AUDIT KEAMANAN SISTEM DENGAN LYNIS DAN LINPEAS
 # ================================================================
 echo "Melakukan audit sistem dengan Lynis dan LinPEAS..."
@@ -97,7 +88,6 @@ echo "Audit sistem selesai."
 message="CyberSec Incident Response Toolkit v2.2 telah selesai untuk server $SERVER_NAME. Hasil:
 - Backdoor: $(wc -l < $sysDir/21.Backdoor-Homedir.txt) ditemukan.
 - Slot: $(wc -l < $sysDir/23.ListSlot.txt) ditemukan.
-- Malware: $(wc -l < $malwareDir/YaraScan_Home.txt) indikasi.
 Audit Lynis & LinPEAS selesai."
 curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" -d chat_id="$TELEGRAM_CHAT_ID" -d text="$message"
 echo "Notifikasi Telegram dikirim."
