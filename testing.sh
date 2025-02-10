@@ -1,19 +1,16 @@
 #! /bin/bash
 
 # *****************************************************************
-# Compromised Assesment Incident Response Toolkit v2.2
+# CyberSec Incident Response Toolkit v2.2
 # *****************************************************************
 # Script ini digunakan untuk mengumpulkan informasi terkait keamanan sistem,
 # mencari backdoor, mendeteksi aktivitas mencurigakan, serta melakukan audit keamanan.
 # Sekarang dengan fitur notifikasi ke Telegram dan pemindaian malware dengan YARA.
 
-# Meminta input manual untuk Nama Server, Telegram Bot Token, dan Chat ID
-echo -n "Masukkan Nama Server: "
-read SERVER_NAME
-echo -n "Masukkan Telegram Bot Token: "
-read -s TELEGRAM_BOT_TOKEN
-echo -n "Masukkan Telegram Chat ID: "
-read TELEGRAM_CHAT_ID
+# Konfigurasi otomatis tanpa input manual
+SERVER_NAME="server1"
+TELEGRAM_BOT_TOKEN="7560964164:AAFZhn2EUWcWsE7qM44OATiHGKOBRw9laRU"
+TELEGRAM_CHAT_ID="-4772629299"
 
 echo "Memulai proses pada server: $SERVER_NAME ..."
 
