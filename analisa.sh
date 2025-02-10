@@ -73,9 +73,7 @@ echo "Pencarian selesai."
 # ================================================================
 # MENGIRIMKAN NOTIFIKASI KE TELEGRAM
 # ================================================================
-message="CyberSec Incident Response Toolkit v2.3 telah selesai untuk server $SERVER_NAME. Hasil:
-- Backdoor: $(wc -l < $sysDir/21.Backdoor-Homedir.txt) ditemukan.
-- Slot: $(wc -l < $sysDir/23.ListSlot.txt) ditemukan."
+message="CyberSec Incident Response Toolkit v2.3 telah selesai untuk server $SERVER_NAME. Hasil:\n- Backdoor: $(wc -l < $sysDir/21.Backdoor-Homedir.txt) ditemukan.\n- Slot: $(wc -l < $sysDir/23.ListSlot.txt) ditemukan."
 curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" -d chat_id="$TELEGRAM_CHAT_ID" -d text="$message"
 echo "Notifikasi Telegram dikirim."
 
@@ -84,6 +82,16 @@ echo "Notifikasi Telegram dikirim."
 # ================================================================
 echo "Mengarsipkan hasil pengumpulan data..."
 tar -czf CyberSecIR-$SERVER_NAME.tar.gz --remove-files CyberSecIR-$SERVER_NAME
+
+# ================================================================
+# MENGIRIMKAN FILE HASIL KE TELEGRAM
+# ================================================================
+echo "Mengirim hasil ke Telegram..."
+curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument" \
+     -F chat_id="$TELEGRAM_CHAT_ID" \
+     -F document="@CyberSecIR-$SERVER_NAME.tar.gz"
+echo "File hasil pemindaian dikirim ke Telegram."
+
 echo "************************************************************"
-echo "Proses selesai, hasil tersimpan di ./CyberSecIR-$SERVER_NAME.tar.gz"
+echo "Proses selesai, hasil telah dikirim ke Telegram."
 echo "************************************************************"
