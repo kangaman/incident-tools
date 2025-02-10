@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # *****************************************************************
-# CyberSec Incident Response Toolkit v2.2
+# Compromised Assesment Incident Response Toolkit v2.2
 # *****************************************************************
 # Script ini digunakan untuk mengumpulkan informasi terkait keamanan sistem,
 # mencari backdoor, mendeteksi aktivitas mencurigakan, serta melakukan audit keamanan.
