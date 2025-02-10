@@ -1,34 +1,36 @@
 #! /bin/bash
 
 # *****************************************************************
-# CyberSec Incident Response Toolkit v2.1
+# Compromised Assesment Incident Response Toolkit v2.1
 # *****************************************************************
 # Script ini digunakan untuk mengumpulkan informasi terkait keamanan sistem,
 # mencari backdoor, mendeteksi aktivitas mencurigakan, serta melakukan audit keamanan.
 # Sekarang dengan fitur notifikasi ke Telegram.
 # hasil modifikasi dari script Automate Data Collection for Compromise Assessment Script v1.0 @adpermana
 
-# Meminta input manual untuk Telegram Bot Token dan Chat ID
+# Meminta input manual untuk Nama Server, Telegram Bot Token, dan Chat ID
+echo "Masukkan Nama Server: "
+read SERVER_NAME
 echo "Masukkan Telegram Bot Token: "
 read -s TELEGRAM_BOT_TOKEN
 echo "Masukkan Telegram Chat ID: "
 read TELEGRAM_CHAT_ID
 
-echo "Memulai proses..."
+echo "Memulai proses pada server: $SERVER_NAME ..."
 
 # Membaca direktori saat ini
 curr=${PWD}
 
 # Membuat direktori utama untuk menyimpan hasil
-mkdir -p $curr/CyberSecIR
-mkdir -p $curr/CyberSecIR/SystemInfo
-mkdir -p $curr/CyberSecIR/MalwareScan
-mkdir -p $curr/CyberSecIR/Audit
+mkdir -p $curr/CyberSecIR-$SERVER_NAME
+mkdir -p $curr/CyberSecIR-$SERVER_NAME/SystemInfo
+mkdir -p $curr/CyberSecIR-$SERVER_NAME/MalwareScan
+mkdir -p $curr/CyberSecIR-$SERVER_NAME/Audit
 
 # Menyesuaikan direktori
-sysDir=$curr/CyberSecIR/SystemInfo
-malwareDir=$curr/CyberSecIR/MalwareScan
-auditDir=$curr/CyberSecIR/Audit
+sysDir=$curr/CyberSecIR-$SERVER_NAME/SystemInfo
+malwareDir=$curr/CyberSecIR-$SERVER_NAME/MalwareScan
+auditDir=$curr/CyberSecIR-$SERVER_NAME/Audit
 
 # ================================================================
 # PENGUMPULAN INFORMASI SISTEM
@@ -111,7 +113,7 @@ echo "Audit sistem selesai."
 # ================================================================
 # MENGIRIMKAN NOTIFIKASI KE TELEGRAM
 # ================================================================
-message="CyberSec Incident Response Toolkit v2.1 telah selesai. Hasil telah dikompresi dan siap diunduh."
+message="CyberSec Incident Response Toolkit v2.1 telah selesai untuk server $SERVER_NAME. Hasil telah dikompresi dan siap diunduh."
 curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" -d chat_id="$TELEGRAM_CHAT_ID" -d text="$message"
 echo "Notifikasi Telegram dikirim."
 
@@ -119,9 +121,9 @@ echo "Notifikasi Telegram dikirim."
 # MEMBUAT FILE KOMPRESI DARI HASIL PEMINDAIAN DAN AUDIT
 # ================================================================
 echo "Mengarsipkan hasil pengumpulan data..."
-tar -czf CyberSecIR.tar.gz CyberSecIR
-rm -rf CyberSecIR
+tar -czf CyberSecIR-$SERVER_NAME.tar.gz CyberSecIR-$SERVER_NAME
+rm -rf CyberSecIR-$SERVER_NAME
 
 echo "************************************************************"
-echo "Proses selesai, hasil tersimpan di ./CyberSecIR.tar.gz"
+echo "Proses selesai, hasil tersimpan di ./CyberSecIR-$SERVER_NAME.tar.gz"
 echo "************************************************************"
